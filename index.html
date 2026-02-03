@@ -1,0 +1,136 @@
+﻿<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="utf-8" />
+<title>CHOtv</title>
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+
+<style>
+body {
+  margin: 0;
+  padding: 0;
+  background: #000;
+  font-family: Palatino, serif;
+}
+
+@font-face {
+  font-family: "twc";
+  src: url("twcenmt.ttf");
+}
+
+.video-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.video-play {
+  position: relative;
+  width: min(100vw, 100vh * 16 / 9);
+  height: min(100vh, 100vw * 9 / 16);
+  overflow: hidden;
+}
+
+.iframe-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+.iframe-wrapper iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* ===== SLIDER WRAPPER ===== */
+.slider {
+	position: absolute;
+	bottom: 5%;
+	max-width: 95%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	pointer-events: none;
+	height: auto;
+	opacity: 0;
+	animation: show 1s ease forwards;
+	animation-delay: 0.75s;
+}
+
+/* GIF */
+.slider img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* ČAS */
+.time {
+	font-size: clamp(1.2em, 2.5vw, 2em);
+	color: #000;
+	font-weight: bold;
+	font-family: twc;
+	position: absolute;    /* dolů */
+	left: 78.8%;   /* doprava */
+	bottom: 6.5%;
+}
+
+@keyframes show {
+  to {
+    opacity: 1;
+  }
+}
+
+</style>
+</head>
+
+<body onload="startTime()">
+
+<div class="video-wrapper">
+  <div class="video-play">
+
+    <div class="iframe-wrapper">
+      <iframe src="https://www.youtube.com/embed/videoseries?controls=0&amp;list=PLDHs-YdooiNkFokGN6uEYzgAmCT0RuQ15&loop=1" 
+              title="YouTube video player" 
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+      </iframe>
+    </div>
+
+    <!-- SLIDER WRAPPER -->
+    <div class="slider">
+      <img id="daily-gif" src="" alt="Dnešní GIF">
+      <div class="time" id="txt"></div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+function startTime() {
+  const today = new Date();
+  let h = today.getHours();
+  let m = today.getMinutes();
+  m = m < 10 ? "0" + m : m;
+  document.getElementById("txt").innerHTML = h + ":" + m;
+  setTimeout(startTime, 500);
+}
+
+// === GIF podle data ===
+(function () {
+  const today = new Date();
+  const y = today.getFullYear();
+  const m = String(today.getMonth()+1).padStart(2,'0');
+  const d = String(today.getDate()).padStart(2,'0');
+  const src = `gifs/gif_${y}-${m}-${d}.gif`;
+
+  const img = document.getElementById("daily-gif");
+  img.onerror = () => img.src = "gifs/default.gif";
+  img.src = src;
+})();
+</script>
+
+</body>
+</html>
