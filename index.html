@@ -47,17 +47,17 @@ body {
 
 /* ===== SLIDER WRAPPER ===== */
 .slider {
-	position: absolute;
-	bottom: 5%;
-	max-width: 95%;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	pointer-events: none;
-	height: auto;
-	opacity: 0;
-	animation: show 1s ease forwards;
-	animation-delay: 0.75s;
+  position: absolute;
+  bottom: 5%;
+  max-width: 95%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  height: auto;
+  opacity: 0;
+  animation: show 1s ease forwards;
+  animation-delay: 0.75s;
 }
 
 /* GIF */
@@ -69,13 +69,12 @@ body {
 
 /* ČAS */
 .time {
-	font-size: clamp(1.2em, 2.5vw, 2em);
-	color: #000;
-	font-weight: bold;
-	font-family: twc;
-	position: absolute;    /* dolů */
-	left: 78.8%;   /* doprava */
-	bottom: 6.5%;
+  color: #000;
+  font-weight: bold;
+  font-family: twc;
+  position: absolute;
+  left: 78.8%;
+  bottom: 6.5%;
 }
 
 @keyframes show {
@@ -130,6 +129,28 @@ function startTime() {
   img.onerror = () => img.src = "gifs/default.gif";
   img.src = src;
 })();
+</script>
+
+<script>
+function resizeTimeToGif() {
+  const img = document.getElementById("daily-gif");
+  const time = document.getElementById("txt");
+
+  if (!img.complete || img.naturalWidth === 0) return;
+
+  const gifWidth = img.clientWidth;
+
+  // Poměr – čím větší číslo, tím menší text
+  const fontSize = gifWidth * 0.025; // 8 % šířky GIFu
+
+  time.style.fontSize = fontSize + "px";
+}
+
+// po načtení GIFu
+document.getElementById("daily-gif").addEventListener("load", resizeTimeToGif);
+
+// při změně velikosti okna
+window.addEventListener("resize", resizeTimeToGif);
 </script>
 
 </body>
